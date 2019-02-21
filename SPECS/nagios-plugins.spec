@@ -13,7 +13,7 @@ Group: Applications/System
 License: GPL
 URL: http://nagiosplug.sourceforge.net/
 Source0: http://dl.sf.net/sourceforge/nagiosplug/%{name}-%{version}.tar.gz
-Source1: %{name}-eon.tar.gz
+Source1: %{name}-rgm.tar.gz
 Source2: %{name}-snmp-0.6.0.tgz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
