@@ -1,8 +1,8 @@
 %define __perl_requires /bin/false
-%define _prefix /srv/eyesofnetwork/nagios/
+%define _prefix /srv/rgm/nagios/
 %define _libexecdir %{_prefix}/plugins
 %define npusr nagios
-%define npgrp eyesofnetwork
+%define npgrp rgm
 
 Name: nagios-plugins
 Version: 2.1.4
@@ -112,7 +112,7 @@ echo "%{_libexecdir}/utils.pm" >> %{name}.lang
 echo "%{_libexecdir}/utils.sh" >> %{name}.lang
 
 # CONTRIB Plugins
-cd %{name}-eon
+cd %{name}-rgm
 cp -aprf * ${RPM_BUILD_ROOT}%{_libexecdir}/
 
 # SNMP C-Plugins
