@@ -143,7 +143,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 * Thu Feb 21 2019 Michael Aubertin <maubertin@fr.scc.com> - 2.1.4-1.rgm
-- Initial fork
+- Initial fork 
 
 * Thu Jan 19 2017 Jean-Philippe Levy <jeanphilippe.levy@gmail.com> - 2.1.4-0.eon
 - upgrade to version 2.1.4
