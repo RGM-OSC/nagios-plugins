@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl
+#!/usr/bin/perl
 
 # Original version written by ken.mckinlay@curtisswright.com
 # Parameter checks and SNMP v3 based on code by Christoph Kron
