@@ -80,7 +80,7 @@ contains those plugins.
 %setup -q
 %setup -D -T -a 1
 %setup -D -T -a 2
-%patch0 -p0
+%patch0 -p1
 
 
 %build
