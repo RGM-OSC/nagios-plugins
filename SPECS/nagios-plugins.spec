@@ -6,7 +6,7 @@
 
 Name: nagios-plugins
 Version: 2.1.4
-Release: 0.rgm
+Release: 2.rgm
 Summary: Host/service/network monitoring program plugins for Nagios
 
 Group: Applications/System
@@ -15,6 +15,7 @@ URL: http://nagiosplug.sourceforge.net/
 Source0: http://dl.sf.net/sourceforge/nagiosplug/%{name}-%{version}.tar.gz
 Source1: %{name}-rgm.tar.gz
 Source2: %{name}-snmp-0.6.0.tgz
+Patch0: nagios-plugins-check_ping.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %define npdir %{_builddir}/%{name}-%{version}
@@ -79,6 +80,7 @@ contains those plugins.
 %setup -q
 %setup -D -T -a 1
 %setup -D -T -a 2
+%patch0 -p0
 
 
 %build
@@ -142,6 +144,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Apr 05 2019 Eric Belhomme <ebelhomme@fr.scc.com> - 2.1.4-2.rgm
+- patch check_ping to remove perfdata when RTA is over critical value
+
 * Thu Feb 21 2019 Michael Aubertin <maubertin@fr.scc.com> - 2.1.4-1.rgm
 - Initial fork 
 

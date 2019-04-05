@@ -1,0 +1,25 @@
+diff -ru nagios-plugins-2.1.4-orig/plugins/check_ping.c nagios-plugins-2.1.4/plugins/check_ping.c
+--- nagios-plugins-2.1.4-orig/plugins/check_ping.c	2019-04-05 11:56:16.311614100 +0200
++++ nagios-plugins-2.1.4/plugins/check_ping.c	2019-04-05 11:51:17.528023600 +0200
+@@ -163,14 +163,16 @@
+ 			printf ("</A>");
+ 
+ 		/* Print performance data */
+-		printf("|%s", fperfdata ("rta", (double) rta, "ms",
+-		                          wrta>0?TRUE:FALSE, wrta,
+-		                          crta>0?TRUE:FALSE, crta,
+-		                          TRUE, 0, FALSE, 0));
+-		printf(" %s\n", perfdata ("pl", (long) pl, "%",
++		printf("| %s", perfdata ("pl", (long) pl, "%",
+ 		                          wpl>0?TRUE:FALSE, wpl,
+ 		                          cpl>0?TRUE:FALSE, cpl,
+ 		                          TRUE, 0, FALSE, 0));
++		if(rta<=crta)
++			printf( " %s", fperfdata ("rta", (double) rta, "ms",
++			                          FALSE, wrta,
++			                          FALSE, crta,
++			                          FALSE, 0, FALSE, 0));
++		printf("\n");
+ 
+ 		if (verbose >= 2)
+ 			printf ("%f:%d%% %f:%d%%\n", wrta, wpl, crta, cpl);
