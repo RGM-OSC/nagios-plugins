@@ -113,12 +113,8 @@ comm -13 %{npdir}/ls-plugins-scripts-before %{npdir}/ls-plugins-scripts-after | 
 echo "%{_libexecdir}/utils.pm" >> %{name}.lang
 echo "%{_libexecdir}/utils.sh" >> %{name}.lang
 
-# CONTRIB Plugins
-cd %{name}-rgm
-cp -aprf * ${RPM_BUILD_ROOT}%{_libexecdir}/
-
 # SNMP C-Plugins
-cd ../%{name}-snmp
+cd %{name}-snmp
 ./configure \
 --prefix=%{_prefix} \
 --exec-prefix=%{_libexecdir}/ \
