@@ -1,20 +1,17 @@
 %define __perl_requires /bin/false
-%define _prefix /srv/rgm/nagios/
+%define _prefix %{rgm_path}/nagios
 %define _libexecdir %{_prefix}/plugins
-%define npusr nagios
-%define npgrp rgm
 
 Name: nagios-plugins
-Version: 2.1.4
-Release: 2.rgm
+Version: 2.2.1
+Release: 0.rgm
 Summary: Host/service/network monitoring program plugins for Nagios
 
 Group: Applications/System
 License: GPL
-URL: http://nagiosplug.sourceforge.net/
-Source0: http://dl.sf.net/sourceforge/nagiosplug/%{name}-%{version}.tar.gz
-Source1: %{name}-rgm.tar.gz
-Source2: %{name}-snmp-0.6.0.tgz
+URL: https://nagios-plugins.org/
+Source0: https://nagios-plugins.org/download/%{name}-%{version}.tar.gz
+Source1: %{name}-snmp-0.6.0.tgz
 Patch0: nagios-plugins-check_ping.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -27,42 +24,46 @@ Provides: nagios-plugins
 Obsoletes: nagios-plugins-custom nagios-plugins-extras
 
 
+### {rgm_user_nagios} -g %{rgm_group} 
+
 # Requires
-Requires:	nagios
-Requires:	bind-utils
-Requires:	coreutils
-Requires:	fping 
-Requires:	gawk
-Requires:	grep
-Requires:	iputils
-Requires:	mysql
-Requires:	net-snmp-utils
-Requires:	ntp
-Requires:	openldap
-Requires:	openssl
-Requires:	openssh-clients
-Requires:	perl, perl-libwww-perl-old, perl-LWP-Protocol-https, perl-Mail-Sendmail, perl-Module-Load, perl-Nagios-Plugin, perl-Time-Duration
-Requires:	postgresql-libs
-Requires:	procps
-Requires:	python
-Requires:	samba-client
-Requires:	shadow-utils
-Requires:	traceroute
-Requires:	/usr/bin/mailq
-BuildRequires:	bind-utils
-BuildRequires:	coreutils
-BuildRequires:	iputils
-BuildRequires:	mysql-devel
-BuildRequires:	net-snmp-utils
-BuildRequires:	net-tools
-BuildRequires:	ntp
-BuildRequires:	openldap-devel
-BuildRequires:	openssh-clients
-BuildRequires:	openssl-devel
-BuildRequires:	postgresql-devel
-BuildRequires:	procps
-BuildRequires:	samba-client
-BuildRequires:	/usr/bin/mailq
+Requires: bind-utils
+Requires: fileutils
+Requires: gawk
+Requires: grep
+Requires: iputils
+Requires: openldap
+Requires: mysql
+Requires: openssl
+Requires: postgresql-libs
+Requires: nagios
+Requires: net-snmp-utils
+Requires: ntp
+Requires: openssh-clients
+Requires: perl
+Requires: procps
+Requires: python
+Requires: samba-client
+Requires: sh-utils
+Requires: shadow-utils
+Requires: textutils
+Requires: traceroute
+Requires: /usr/bin/mailq
+BuildRequires: rpm-macros-rgm
+BuildRequires: bind-utils
+BuildRequires: iputils
+BuildRequires: mysql-devel
+BuildRequires: net-snmp-utils
+BuildRequires: net-tools
+BuildRequires: ntp
+BuildRequires: openldap-devel
+BuildRequires: openssh-clients
+BuildRequires: openssl-devel
+BuildRequires: postgresql-devel
+BuildRequires: procps
+BuildRequires: samba-client
+BuildRequires: sh-utils
+BuildRequires: /usr/bin/mailq
 
 
 %description
@@ -79,7 +80,6 @@ contains those plugins.
 %prep
 %setup -q
 %setup -D -T -a 1
-%setup -D -T -a 2
 %patch0 -p1
 
 
@@ -104,21 +104,17 @@ make AM_INSTALL_PROGRAM_FLAGS="" DESTDIR=${RPM_BUILD_ROOT} install
 %{__install} -Dp -m0644 plugins-scripts/utils.pm ${RPM_BUILD_ROOT}%{perl_vendorlib}/utils.pm
 build-aux/install-sh -c  -m 664 plugins/libnpcommon.a ${RPM_BUILD_ROOT}%{_libexecdir}
 %find_lang %{name}
-echo "%defattr(755,%{npusr},%{npgrp})" >> %{name}.lang
+echo "%defattr(755,%{rgm_user_nagios},%{rgm_group})" >> %{name}.lang
 comm -13 %{npdir}/ls-plugins-before %{npdir}/ls-plugins-after | egrep -v "\.o$|^\." | gawk -v libexecdir=%{_libexecdir} '{printf( "%s/%s\n", libexecdir, $0);}' >> %{name}.lang
 echo "%defattr(755,root,root)" >> %{name}.lang
 comm -13 %{npdir}/ls-plugins-root-before %{npdir}/ls-plugins-root-after | egrep -v "\.o$|^\." | gawk -v libexecdir=%{_libexecdir} '{printf( "%s/%s\n", libexecdir, $0);}' >> %{name}.lang
-echo "%defattr(755,%{npusr},%{npgrp})" >> %{name}.lang
+echo "%defattr(755,%{rgm_user_nagios},%{rgm_group})" >> %{name}.lang
 comm -13 %{npdir}/ls-plugins-scripts-before %{npdir}/ls-plugins-scripts-after | egrep -v "\.o$|^\." | gawk -v libexecdir=%{_libexecdir} '{printf( "%s/%s\n", libexecdir, $0);}' >> %{name}.lang
 echo "%{_libexecdir}/utils.pm" >> %{name}.lang
 echo "%{_libexecdir}/utils.sh" >> %{name}.lang
 
-# CONTRIB Plugins
-cd %{name}-rgm
-cp -aprf * ${RPM_BUILD_ROOT}%{_libexecdir}/
-
 # SNMP C-Plugins
-cd ../%{name}-snmp
+cd %{name}-snmp
 ./configure \
 --prefix=%{_prefix} \
 --exec-prefix=%{_libexecdir}/ \
@@ -137,13 +133,17 @@ rm -rf $RPM_BUILD_ROOT
 %doc ChangeLog
 %{_prefix}/share/locale/de/LC_MESSAGES/nagios-plugins.mo
 %{_prefix}/share/locale/fr/LC_MESSAGES/nagios-plugins.mo
-%defattr(775,%{npusr},%{npgrp})
+%defattr(775,%{rgm_user_nagios},%{rgm_group})
 %{_libexecdir}/*
 %{_prefix}/share/locale
 %{perl_vendorlib}/utils.pm
 
 
 %changelog
+* Mon Apr 08 2019 Eric Belhomme <ebelhomme@fr.scc.com> - 2.2.1-0.rgm
+- upgraded nagios-plugins to latest release (2.2.1)
+- moved RGM additional plugins into nagios-plugins-rgm package
+
 * Fri Apr 05 2019 Eric Belhomme <ebelhomme@fr.scc.com> - 2.1.4-2.rgm
 - patch check_ping to remove perfdata when RTA is over critical value
 
