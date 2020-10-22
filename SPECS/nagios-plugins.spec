@@ -12,13 +12,14 @@ License: GPL
 URL: https://nagios-plugins.org/
 Source0: https://nagios-plugins.org/download/%{name}-%{version}.tar.gz
 
-%define src_nrpe nrpe-4.0.2
-Source1: %{src_nrpe}.tar.gz
-Source2: %{name}-snmp-0.6.0.tgz
-Patch0: nagios-plugins-check_ping.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %define npdir %{_builddir}/%{name}-%{version}
+%define src_nrpe nrpe-4.0.2
+
+Source1: %{src_nrpe}.tar.gz
+Patch0: nagios-plugins-check_ping.patch
+
 
 Prefix: %{_libexecdir}
 Provides: nagios-plugins
@@ -133,19 +134,9 @@ comm -13 %{npdir}/ls-plugins-scripts-before %{npdir}/ls-plugins-scripts-after | 
 echo "%{_libexecdir}/utils.pm" >> %{name}.lang
 echo "%{_libexecdir}/utils.sh" >> %{name}.lang
 
-# SNMP C-Plugins
-cd %{name}-snmp
-./configure \
---prefix=%{_prefix} \
---exec-prefix=%{_libexecdir}/ \
---libexecdir=%{_libexecdir}/ \
---sysconfdir=%{_prefix}/etc \
---datadir=%{_prefix}/share
-make %{?_smp_mflags}
-make AM_INSTALL_PROGRAM_FLAGS="" DESTDIR=${RPM_BUILD_ROOT} install
-
 # NRPE plugin
-install -m 0755 -o %{rgm_user_nagios} -g %{rgm_group} %{src_nrpe}/src/check_nrpe  %{buildroot}%{rgm_path}}/nagios/plugins/
+install -m 0755 -o %{rgm_user_nagios} -g %{rgm_group} %{src_nrpe}/src/check_nrpe  %{buildroot}%{rgm_path}/nagios/plugins/
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -185,14 +176,16 @@ rm -rf $RPM_BUILD_ROOT
 * Mon May 12 2014 Jean-Philippe Levy <jeanphilippe.levy@gmail.com> - 2.0.1-0.eon
 - upgrade to version 2.0.1
 
-* Tue Mar 06 2014 Jean-Philippe Levy <jeanphilippe.levy@gmail.com> - 2.0-0.eon
+* Thu Mar 06 2014 Jean-Philippe Levy <jeanphilippe.levy@gmail.com> - 2.0-0.eon
 - packaged for EyesOfNetwork appliance 4.1
 
 * Mon May 23 2005 Sean Finney <seanius@seanius.net> - cvs head
 - just include the nagios plugins directory, which will automatically include
   all generated plugins (which keeps the build from failing on systems that
   don't have all build-dependencies for every plugin)
-* Tue Mar 04 2004 Karl DeBisschop <karl[AT]debisschop.net> - 1.4.0alpha1
+
+* Thu Mar 04 2004 Karl DeBisschop <karl[AT]debisschop.net> - 1.4.0alpha1
 - extensive rewrite to facilitate processing into various distro-compatible specs
-* Tue Mar 04 2004 Karl DeBisschop <karl[AT]debisschop.net> - 1.4.0alpha1
+
+* Thu Mar 04 2004 Karl DeBisschop <karl[AT]debisschop.net> - 1.4.0alpha1
 - extensive rewrite to facilitate processing into various distro-compatible specs
