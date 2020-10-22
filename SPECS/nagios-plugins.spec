@@ -4,14 +4,17 @@
 
 Name: nagios-plugins
 Version: 2.2.1
-Release: 0.rgm
+Release: 1.rgm
 Summary: Host/service/network monitoring program plugins for Nagios
 
 Group: Applications/System
 License: GPL
 URL: https://nagios-plugins.org/
 Source0: https://nagios-plugins.org/download/%{name}-%{version}.tar.gz
-Source1: %{name}-snmp-0.6.0.tgz
+
+%define src_nrpe nrpe-4.0.2
+Source1: %{src_nrpe}.tar.gz
+Source2: %{name}-snmp-0.6.0.tgz
 Patch0: nagios-plugins-check_ping.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -82,14 +85,17 @@ contains those plugins.
 %setup -D -T -a 1
 %patch0 -p1
 
+%setup -D -a 1
+
 
 %build
+# build nagios-plugins
 ./configure \
---prefix=%{_prefix} \
---exec-prefix=%{_exec_prefix} \
---libexecdir=%{_libexecdir} \
---datadir=%{_datadir} \
---with-cgiurl=/nagios/cgi-bin
+    --prefix=%{_prefix} \
+    --exec-prefix=%{_exec_prefix} \
+    --libexecdir=%{_libexecdir} \
+    --datadir=%{_datadir} \
+    --with-cgiurl=/nagios/cgi-bin
 ls -1 %{npdir}/plugins > %{npdir}/ls-plugins-before
 ls -1 %{npdir}/plugins-root > %{npdir}/ls-plugins-root-before
 ls -1 %{npdir}/plugins-scripts > %{npdir}/ls-plugins-scripts-before
@@ -97,6 +103,20 @@ make %{?_smp_mflags}
 ls -1 %{npdir}/plugins > %{npdir}/ls-plugins-after
 ls -1 %{npdir}/plugins-root > %{npdir}/ls-plugins-root-after
 ls -1 %{npdir}/plugins-scripts > %{npdir}/ls-plugins-scripts-after
+
+#build angios nrpe plugin
+cd %{src_nrpe}
+./configure \
+    --enable-command-args \
+    --enable-bash-command-substitution \
+    --libexecdir=/srv/rgm/nagios/plugins \
+    --prefix=/srv/rgm/nrpe \
+    --with-nrpe-port=5666 \
+    --with-nagios-user=nagios \
+    --with-nagios-group=rgm
+make check_nrpe
+cd -
+
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -124,6 +144,9 @@ cd %{name}-snmp
 make %{?_smp_mflags}
 make AM_INSTALL_PROGRAM_FLAGS="" DESTDIR=${RPM_BUILD_ROOT} install
 
+# NRPE plugin
+install -m 0755 -o %{rgm_user_nagios} -g %{rgm_group} %{src_nrpe}/src/check_nrpe  %{buildroot}%{rgm_path}}/nagios/plugins/
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -140,6 +163,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Oct 22 2020 Eric Belhomme <ebelhomme@fr.scc.com> - 2.2.1-1.rgm
+- add Nagios NRPE plugin 4.0.2
+
 * Mon Apr 08 2019 Eric Belhomme <ebelhomme@fr.scc.com> - 2.2.1-0.rgm
 - upgraded nagios-plugins to latest release (2.2.1)
 - moved RGM additional plugins into nagios-plugins-rgm package
