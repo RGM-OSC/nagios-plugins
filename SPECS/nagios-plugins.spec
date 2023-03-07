@@ -15,7 +15,7 @@ Source0: https://nagios-plugins.org/download/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %define npdir %{_builddir}/%{name}-%{version}
-%define src_nrpe nrpe-4.0.2
+%define src_nrpe nrpe-nrpe-4.1.0
 
 Source1: %{src_nrpe}.tar.gz
 Patch0: nagios-plugins-check_ping.patch
@@ -42,32 +42,32 @@ Requires: openssl
 Requires: postgresql-libs
 Requires: nagios
 Requires: net-snmp-utils
-Requires: ntp
+Requires: ntpstat
 Requires: openssh-clients
 Requires: perl
 Requires: procps
 Requires: python
 Requires: samba-client
-Requires: sh-utils
+Requires: coreutils
 Requires: shadow-utils
 Requires: textutils
 Requires: traceroute
-Requires: /usr/bin/mailq
+Requires: esmtp
 BuildRequires: rpm-macros-rgm
 BuildRequires: bind-utils
 BuildRequires: iputils
-BuildRequires: mysql-devel
+BuildRequires: mariadb-devel
 BuildRequires: net-snmp-utils
 BuildRequires: net-tools
-BuildRequires: ntp
+BuildRequires: ntpstat
 BuildRequires: openldap-devel
 BuildRequires: openssh-clients
 BuildRequires: openssl-devel
 BuildRequires: postgresql-devel
 BuildRequires: procps
 BuildRequires: samba-client
-BuildRequires: sh-utils
-BuildRequires: /usr/bin/mailq
+BuildRequires: coreutils
+BuildRequires: esmtp
 
 
 %description
@@ -105,7 +105,7 @@ ls -1 %{npdir}/plugins > %{npdir}/ls-plugins-after
 ls -1 %{npdir}/plugins-root > %{npdir}/ls-plugins-root-after
 ls -1 %{npdir}/plugins-scripts > %{npdir}/ls-plugins-scripts-after
 
-#build angios nrpe plugin
+#build nagios nrpe plugin
 cd %{src_nrpe}
 ./configure \
     --enable-command-args \
