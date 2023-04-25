@@ -1,0 +1,4 @@
+b9630456e07c2854f1fcab66782e264302b68d84:SOURCES_TAR/nagios-plugins-2.2.1/plugins/tests/certs/expired-key.pem:private-key:1
+b9630456e07c2854f1fcab66782e264302b68d84:SOURCES_TAR/nagios-plugins-2.2.1/plugins/tests/certs/server-key.pem:private-key:1
+700e5ce18280e1e4ee54380548e5c23c0b54c430:SOURCES_TAR/nagios-plugins-2.1.4/plugins/tests/certs/expired-key.pem:private-key:1
+700e5ce18280e1e4ee54380548e5c23c0b54c430:SOURCES_TAR/nagios-plugins-2.1.4/plugins/tests/certs/server-key.pem:private-key:1

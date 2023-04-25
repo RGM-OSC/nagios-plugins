@@ -28,11 +28,10 @@ Provides: nagios-plugins
 Obsoletes: nagios-plugins-custom nagios-plugins-extras
 
 
-### {rgm_user_nagios} -g %{rgm_group} 
+### {rgm_user_nagios} -g %{rgm_group}
 
 # Requires
 Requires: bind-utils
-Requires: fileutils
 Requires: gawk
 Requires: grep
 Requires: iputils
@@ -50,7 +49,6 @@ Requires: python
 Requires: samba-client
 Requires: coreutils
 Requires: shadow-utils
-Requires: textutils
 Requires: traceroute
 Requires: esmtp
 BuildRequires: rpm-macros-rgm
@@ -165,7 +163,7 @@ rm -rf $RPM_BUILD_ROOT
 - patch check_ping to remove perfdata when RTA is over critical value
 
 * Thu Feb 21 2019 Michael Aubertin <maubertin@fr.scc.com> - 2.1.4-1.rgm
-- Initial fork 
+- Initial fork
 
 * Thu Jan 19 2017 Jean-Philippe Levy <jeanphilippe.levy@gmail.com> - 2.1.4-0.eon
 - upgrade to version 2.1.4
