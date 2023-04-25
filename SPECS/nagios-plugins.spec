@@ -36,7 +36,7 @@ Requires: gawk
 Requires: grep
 Requires: iputils
 Requires: openldap
-Requires: mysql
+Requires: mariadb
 Requires: openssl
 Requires: postgresql-libs
 Requires: nagios
