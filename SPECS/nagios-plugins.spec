@@ -4,7 +4,7 @@
 
 Name: nagios-plugins
 Version: 2.2.1
-Release: 1.rgm
+Release: 2.rgm
 Summary: Host/service/network monitoring program plugins for Nagios
 
 Group: Applications/System
@@ -152,6 +152,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Jun 30 2023 Vincent Fricou <vfricou@fr.scc.com> - 2.2.1-2.rgm
+- Fix dependencies for EL9
+
 * Thu Oct 22 2020 Eric Belhomme <ebelhomme@fr.scc.com> - 2.2.1-1.rgm
 - add Nagios NRPE plugin 4.0.2
 
